@@ -441,11 +441,12 @@ public class DBHelper extends SQLiteOpenHelper
                 withArgs(id));
 
         // Also wipe card images associated with this card
-        try {
-            Utils.saveCardImage(mContext, null, id, true);
-            Utils.saveCardImage(mContext, null, id, false);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        for (ImageType imageType : ImageType.values()) {
+            try {
+                Utils.saveCardImage(mContext, null, id, imageType);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
 
         return (rowsDeleted == 1);
