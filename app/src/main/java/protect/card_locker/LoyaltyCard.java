@@ -32,12 +32,14 @@ public class LoyaltyCard implements Parcelable {
     public final int archiveStatus;
     public final long lastUsed;
     public int zoomLevel;
+    public int zoomWidth;
 
+    // Another constructor, with zoomWidth as an extra parameter
     public LoyaltyCard(final int id, final String store, final String note, final Date expiry,
                        final BigDecimal balance, final Currency balanceType, final String cardId,
                        @Nullable final String barcodeId, @Nullable final CatimaBarcode barcodeType,
                        @Nullable final Integer headerColor, final int starStatus,
-                       final long lastUsed, final int zoomLevel, final int archiveStatus) {
+                       final long lastUsed, final int zoomLevel, final int zoomWidth, final int archiveStatus) {
         this.id = id;
         this.store = store;
         this.note = note;
@@ -51,6 +53,7 @@ public class LoyaltyCard implements Parcelable {
         this.starStatus = starStatus;
         this.lastUsed = lastUsed;
         this.zoomLevel = zoomLevel;
+        this.zoomWidth = zoomWidth;
         this.archiveStatus = archiveStatus;
     }
 
@@ -71,6 +74,7 @@ public class LoyaltyCard implements Parcelable {
         starStatus = in.readInt();
         lastUsed = in.readLong();
         zoomLevel = in.readInt();
+        zoomWidth = in.readInt();
         archiveStatus = in.readInt();
     }
 
@@ -89,6 +93,7 @@ public class LoyaltyCard implements Parcelable {
         parcel.writeInt(starStatus);
         parcel.writeLong(lastUsed);
         parcel.writeInt(zoomLevel);
+        parcel.writeInt(zoomWidth);
         parcel.writeInt(archiveStatus);
     }
 
@@ -103,6 +108,7 @@ public class LoyaltyCard implements Parcelable {
         int starred = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.STAR_STATUS));
         long lastUsed = cursor.getLong(cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.LAST_USED));
         int zoomLevel = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.ZOOM_LEVEL));
+        int zoomWidth = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.ZOOM_WIDTH));
         int archived = cursor.getInt(cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.ARCHIVE_STATUS));
 
         int barcodeTypeColumn = cursor.getColumnIndexOrThrow(DBHelper.LoyaltyCardDbIds.BARCODE_TYPE);
@@ -130,7 +136,7 @@ public class LoyaltyCard implements Parcelable {
             headerColor = cursor.getInt(headerColorColumn);
         }
 
-        return new LoyaltyCard(id, store, note, expiry, balance, balanceType, cardId, barcodeId, barcodeType, headerColor, starred, lastUsed, zoomLevel,archived);
+        return new LoyaltyCard(id, store, note, expiry, balance, balanceType, cardId, barcodeId, barcodeType, headerColor, starred, lastUsed, zoomLevel, zoomWidth, archived);
     }
 
     @Override
